@@ -1,4 +1,4 @@
-# Data Science and Computer Science  Kuan-Cheng Lee
+# Data Science and Computer Science - Kuan-Cheng Lee
 
 Welcome to my Data Science Portfolio! This portfolio showcases selected academic and independent projects I've worked on related to data science, machine learning, and social science research. It also includes my achievements, skills, and publications. I regularly update this space as I continue to grow and learn.
 
