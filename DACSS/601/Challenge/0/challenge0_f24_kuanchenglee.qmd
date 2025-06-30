@@ -1,0 +1,40 @@
+---
+title: "About Me"
+author: "Kuan-Cheng Lee"
+date: "9/4/2024"
+format:
+  html: 
+    embed-resources: true
+editor: source
+---
+
+
+# INTRODUCTION
+
+**MY NAME IS KUAN-CHENG LEE**
+
+In this course, we'll be exploring a person called Kuan-Cheng Lee. Let's make it simple. His English name is **Steven**.
+
+He comes from *Taiwan* which is a lovely place close to China. I graduate from Arizona State University aka the **Sun Devil**. My Bachlor degree is Computer science. The reason I apply for DACSS is because I want to learn different area except computer science.
+
+![Photo of me](D:\文件\Documents\留學\Fall2024\DACSS\dacss601\20240810_145836.jpg)
+
+# One Fact About Me That Everyone Should Know 
+
+:::{.panel-tabset}
+
+
+### Hobby
+*Photography* is one of the hobby I enjoy the most. I have my own camera and focus on landscape and aircraft photos. 
+
+![Sunset](D:\文件\Documents\留學\Fall2024\DACSS\dacss601\20240829_191145.jpg)
+
+### Personality
+**Respectful**, **Positive** are the Personalities I have. During my college years, I learn many things. I went through pandemic and black lives matter event. I realize people should respectful to each other. For positive personality, my undergraduate didn't go well at the beginning. After I start to look into which part I missed. I realized keeping positive energy is very important during school time. It becomes the most important energy to keep me on track and graude from the college.
+
+
+:::
+
+
+
+

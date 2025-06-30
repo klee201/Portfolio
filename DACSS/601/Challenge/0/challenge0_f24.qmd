@@ -1,0 +1,31 @@
+---
+title: "About Me"
+author: "Kuan-Cheng Lee"
+date: "a date"
+format:
+  html: 
+    embed-resources: true
+editor: source
+---
+
+# Background (you can change the name of this section)
+
+This is a paragraph about my background.
+
+# One Fact About Me That Everyone Should Know (you can also change the
+name of this section)
+
+:::{.panel-tabset}
+
+### Panel 1 Label
+
+Panel 1 text
+
+### Panel 2 Label
+
+Panel 2 text
+
+:::
+
+
+
