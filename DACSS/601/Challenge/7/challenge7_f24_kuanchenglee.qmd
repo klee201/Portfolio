@@ -1,0 +1,374 @@
+---
+title: "Challenge 7: Concepts and Practices of Research Design for a Data Science Project"
+author: "Kuan-Cheng Lee"
+description: "Thank you so much professor and the graders"
+date: "11/23/2024"
+format:
+  html:
+    df-print: paged
+    embed-resources: true
+    self-contained-math: true
+---
+
+**Make sure you change the author's name in the above YAML header.**
+
+## Setup
+
+```{r loading-packages}
+library(tidyr)
+library(dplyr)
+library(readxl)
+library(haven)
+library(stringr) 
+library(ggplot2) 
+library(labelled) # helpful in part 2
+```
+
+## Challenge Overview
+
+In this challenge, you will apply knowledge about research design and other topics covered in lectures so far to several datasets of your choice.
+
+There will be coding components and writing components. Please read the instructions for each part and complete the assignment.
+
+## Part 1. Research and Hypotheses (5 pts)
+
+Choose one of the following datasets to do a simple practice of research design and hypothesis testing:
+
+Dataset 1: The General Social Survey (2022). You can find more information about this dataset at <https://gss.norc.org/About-The-GSS>. A codebook explaining the definition of each variable and column is also included.
+
+Dataset 2: The COVID-19 Report for the 2024-2025 respiratory season in Massachusetts. The datasets are stored in an Excel file in multiple sheets. You can find more information about this dataset in the "Introduction", "Definition", "Notes", and "Data Dictionary" tabs in the Excel file.
+
+1.  **Read the data you choose in R. (0.5 pts)**
+
+    For GSS, there is only one data sheet (.dta).
+
+    For the MA Covid-19 reports, you can choose **one of the four datasheets (tabs in Excel)** to read ("Weekly Cases and Deaths", "Case and Death Demographics", "County Data", and "City and Town Data").
+
+```{r p1-1}
+#type your code here
+#I select the dataset 2
+# Define the file path
+file_path <- "covid-19-dashboard-2024-2025-11-14-24.xlsx"
+
+#I select the Weekly Case and Deaths
+# Read the specific sheet
+data <- read_excel(file_path, sheet = "Weekly Cases and Deaths")  
+
+
+# Preview the data
+head(data)
+
+
+
+
+
+
+
+```
+
+2.  **Answer the following questions about your chosen dataset.**
+
+    \(1\) what is the structure (dimension) of the data? **(0.25 pts)** The number of column is 10 and the number of row is 247.
+
+    ```{r p1-2}
+    #type your code here
+    # Check the structure of the dataset
+    str(data)
+
+    # Get the dimensions (number of rows and columns)
+    dim(data)
+
+    # Display column names
+    colnames(data)
+
+
+
+    ```
+
+    \(2\) what is the unit of observation/unit of analysis? **(0.25 pts)** 
+    **The unit of observation/unit of analysis in this dataset appears to be weekly aggregates of COVID-19 cases and deaths for each respiratory season, specifically for Massachusetts. There are Confirmed and probable cases and deaths, Week start and end dates, and The season to which the data belongs.**
+
+
+3.  **Read the overview introduction, codebook (for the GSS data), and other related information about the data (for the Covid-19 data). If you browse the the data loaded in R, it seems like there are many different questions this data can answer. Based on the class lecture about "good research questions", please propose ONE research question that can be answered using this data. (0.5 pts)**
+
+How do weekly confirmed COVID-19 cases compare to weekly confirmed deaths during the 2024-2025 respiratory season?
+
+4.  **Based on the research question you proposed above, propose a hypothesis about a possible relationship between two items. (0.5 pts)**
+
+Weekly confirmed COVID-19 case counts will positively correlate with weekly confirmed deaths during the 2024-2025 respiratory season.
+
+5.  **Based on the hypothesis proposed, please select variables/columns in the data to measure the corresponding concepts in the hypothesis statement. You should select at least one variable/column to measure each concept.**
+
+    **You should also specify which variables/columns you choose and explain why they are the proper ones to measure the concepts. (1 pt)** COVID-19 case rates: Select a column like case_rate or equivalent.Population density: Select a column representing population density (e.g., pop_density) are the two
+
+    **Instruction:** Don't just write, "They are reliable and valid". Instead, you should discuss more why they are reliable (can consistently produce the same results regardless of the same results regardless different times and contexts) and valid (why it is better than other possible or alternative variables/columns). You can find the concepts of validity and reliability in the Week 12 Slides. There are also more in-depth introductions online, such as [this page](http://media.acc.qcc.cuny.edu/faculty/volchok/Measurement_Volchok/Measurement_Volchok6.html).
+
+Weekly Confirmed COVID-19 Cases Variable/Column: "Confirmed cases" Rationale:
+
+Reliability: This column directly represents the number of confirmed cases and is consistently updated based on laboratory-confirmed results. Its calculation methods are standardized across all weeks, making it reliable for longitudinal analysis. Validity: It specifically captures confirmed cases, avoiding potential noise from unconfirmed or suspected cases. Using this column is more accurate than aggregate metrics like "Confirmed and probable cases," which include less precise estimates.
+
+6.  **Write code to conduct descriptive statistics for the two variables/columns you selected above. You should present the following information in your descriptive statistics: range, average, standard deviation, the number of NAs, and the number of unique values. (0.5 pts)**
+
+    ```{r p1-6}
+    #type your code here
+    
+
+    # Columns of interest
+    cases_column <- "Confirmed cases"
+    deaths_column <- "Confirmed deaths"
+
+    # Compute descriptive statistics for "Confirmed cases"
+    cases_stats <- data %>%
+      summarise(
+    Min = min(.data[[cases_column]], na.rm = TRUE),
+    Max = max(.data[[cases_column]], na.rm = TRUE),
+    Mean = mean(.data[[cases_column]], na.rm = TRUE),
+    SD = sd(.data[[cases_column]], na.rm = TRUE),
+    NA_Count = sum(is.na(.data[[cases_column]])),
+    Unique_Values = n_distinct(.data[[cases_column]])
+      )
+
+    # Print descriptive statistics for "Confirmed cases"
+    print("Descriptive Statistics for Confirmed Cases")
+    print(cases_stats)
+
+    # Compute descriptive statistics for "Confirmed deaths"
+    deaths_stats <- data %>%
+      summarise(
+    Min = min(.data[[deaths_column]], na.rm = TRUE),
+    Max = max(.data[[deaths_column]], na.rm = TRUE),
+    Mean = mean(.data[[deaths_column]], na.rm = TRUE),
+    SD = sd(.data[[deaths_column]], na.rm = TRUE),
+    NA_Count = sum(is.na(.data[[deaths_column]])),
+    Unique_Values = n_distinct(.data[[deaths_column]])
+      )
+
+    # Print descriptive statistics for "Confirmed deaths"
+    print("Descriptive Statistics for Confirmed Deaths")
+    print(deaths_stats)
+
+
+
+    ```
+
+7.  **Plot one univariate graph for each of the variables/columns. (0.5 pts)**
+
+    ```{r p1-7}
+    #type your code here
+    
+
+    # Histogram for "Confirmed cases"
+    ggplot(data, aes(x = `Confirmed cases`)) +
+      geom_histogram(binwidth = 100, fill = "skyblue", color = "black") +
+      labs(
+    title = "Distribution of Confirmed COVID-19 Cases",
+    x = "Confirmed Cases",
+    y = "Frequency"
+      ) +
+      theme_minimal()
+
+    # Boxplot for "Confirmed deaths"
+    ggplot(data, aes(y = `Confirmed deaths`)) +
+      geom_boxplot(fill = "lightgreen", color = "black") +
+      labs(
+    title = "Boxplot of Confirmed COVID-19 Deaths",
+    y = "Confirmed Deaths"
+      ) +
+      theme_minimal()
+
+
+
+
+    ```
+
+8.  **Finally, plot a graph to visually test the hypothesis you propose. Based on the visual evidence, do you see any potential association between the two variables? (1 pt)**
+The confirmed death and comfirmed cases are not related. 
+
+    ```{r 1-8}
+    #type your code here
+    # Scatter plot to test the hypothesis between "Confirmed cases" and "Confirmed deaths"
+    ggplot(data, aes(x = `Confirmed cases`, y = `Confirmed deaths`)) +
+      geom_point(color = "blue", alpha = 0.6) +
+      geom_smooth(method = "lm", color = "red", linetype = "dashed") +  # Add linear regression line
+      labs(
+    title = "Confirmed COVID-19 Cases vs. Confirmed Deaths",
+    x = "Confirmed Cases",
+    y = "Confirmed Deaths"
+      ) +
+      theme_minimal()
+
+    ```
+
+## Part 2. Reviewing the findings of a graph by examining the raw data. (5 pts)
+
+This part of the challenge is based on a scenario. Suppose you are a data scientist who provides consulting services to the government. One day, your client asks you to investigate an article by the New York Times that reported on some research on people's confidence in the institutions of democracy. It had been published in an academic journal. The headline in the Times ran, ["How Stable Are Democracies? 'Warning Signs Are Flashing Red'" (Taub, 2016)](https://www.nytimes.com/2016/11/29/world/americas/western-liberal-democracy.html). The graph accompanying the article, as shown below, plots people's responses to a question in the World Value Survey (WVS) (V162-Importance of democracy). The graph certainly seemed to show an alarming decline. The graph was widely circulated on social media. It's an elegant small-multiple that, in addition to the point ranges it identifies, also shows an error range (labeled as such for people who might not know what it is), and the story told across the panels for each country is pretty consistent.
+
+![](https://socviz.co/assets/ch-01-democracy-nyt-version.png){fig-align="center" width="1000"}
+
+1.  **Please briefly describe the major findings of this graph. (0.5 pts)**
+
+The findings emphasize a potential "crisis of democracy", as younger generations appear less committed to its importance, raising concerns about the future stability of democratic norms.
+
+2.  **Your client is concerned about the findings of this graph.** On the one hand, they are surprised and worried by the "crisis of democracy" presented in this graph.**On the other hand, they also doubt the argument of the NYT article and the validity of the findings of this graph.** Before deciding on making any policy to respond, they ask you to conduct some additional research with the original data.
+
+    \(1\) Read the provided WVS datasets (WVS5/WVS6). The datasets are large, so you should subset them before analysis. **Please keep only the following columns: respondents' country (`V2`), year of birth (`V236`/`V241`), and the question for plotting (`V162`/`V140`)** (yes, some of the variables have different names in the two waves). You also need to filter only the observations in the six countries mentioned above: Sweden, Australia, Netherlands, United States, New Zealand, and Britain/United Kingdom. Row bind the two data sets together. Your combined data should have three columns.**(1 pt)**
+
+    Note: all the variable information, including those that are measured categorically, are represented by numbers. You must check out the WVS5/WVS6 codebooks to identify what the numerical values mean (especially for V2-country, see p57 of the WVS5 codebook and p64 of the WVS6 codebook).
+
+```{r p2-2-1}
+#type your code here
+wvs6 <- readRDS("WVS6.rds")
+wvs5 <- readRDS("WVS5.rds")
+
+# WVS5: V2 (country), V236 (year of birth), V162 (importance of democracy)
+wvs5_subset <- wvs5[, c("V2", "V236", "V162")]
+
+# WVS6: V2 (country), V241 (year of birth), V140 (importance of democracy)
+wvs6_subset <- wvs6[, c("V2", "V241", "V140")]
+
+# Rename columns to make them consistent across both datasets
+colnames(wvs5_subset) <- c("country", "birth_year", "importance_of_democracy")
+colnames(wvs6_subset) <- c("country", "birth_year", "importance_of_democracy")
+
+# Filter the data for the six specified countries
+# According to the WVS5 and WVS6 codebooks, the country codes are as follows:
+# 36 = Australia, 124 = New Zealand, 528 = Netherlands, 752 = Sweden,
+# 826 = United Kingdom, 840 = United States
+countries_to_keep <- c(36, 124, 528, 752, 826, 840)
+
+wvs5_filtered <- subset(wvs5_subset, country %in% countries_to_keep)
+wvs6_filtered <- subset(wvs6_subset, country %in% countries_to_keep)
+
+# Combine the datasets
+combined_data <- rbind(wvs5_filtered, wvs6_filtered)
+
+# View or save the resulting dataset
+head(combined_data) # Display the first few rows
+write.csv(combined_data, "combined_WVS_data.csv", row.names = FALSE)
+
+
+```
+
+```         
+\(2\) Calculate descriptive statistics for the three variables. You can plot
+univariate graphs as we did in Challenge 4 or apply the summary statistics
+function as in Challenge 3. You can do either approach, you do not have to 
+do both. 
+**(1 pt）**
+```
+
+```{r p2-2-2}
+#type your code here
+# Load the combined dataset
+
+combined_data <- read.csv("combined_WVS_data.csv")
+
+# Ensure 'birth_year' is numeric
+combined_data$birth_year <- as.numeric(combined_data$birth_year)
+
+# Filter data to include only years between 1900 and 2000
+filtered_data <- subset(combined_data, birth_year >= 1900 & birth_year <= 2000)
+
+# Generate the histogram with bins from 1900 to 2000
+hist(filtered_data$birth_year, 
+     main = "Distribution of Birth Year (1900–2000)", 
+     xlab = "Year of Birth", 
+     col = "skyblue", 
+     border = "white", 
+     breaks = seq(1900, 2000, by = 1))  # One-year intervals
+
+# Bar plot for 'importance_of_democracy' (categorical variable)
+barplot(table(combined_data$importance_of_democracy), 
+        main = "Importance of Democracy", 
+        xlab = "Response", 
+        ylab = "Frequency", 
+        col = "lightgreen")
+
+
+
+    
+```
+
+```         
+\(3\) (Optional) Please replicate the graph of the NYT article.
+```
+
+```{r p2-2-3}
+#type your code here
+
+# Aggregate data: Mean and standard error of "importance of democracy" by country
+agg_data <- combined_data %>%
+  group_by(country) %>%
+  summarise(
+    mean_score = mean(importance_of_democracy, na.rm = TRUE),
+    se_score = sd(importance_of_democracy, na.rm = TRUE) / sqrt(n())
+  )
+
+# Plot the replicated graph
+ggplot(agg_data, aes(x = country, y = mean_score)) +
+  geom_point(size = 4, color = "blue") +
+  geom_errorbar(aes(ymin = mean_score - se_score, ymax = mean_score + se_score),
+                width = 0.2, color = "red") +
+  labs(
+    title = "Importance of Democracy by Country",
+    x = "Country",
+    y = "Mean Score (with Error Bars)"
+  ) +
+  theme_minimal()
+
+    
+```
+
+```         
+\(4\) Now, please plot a graph to show the relationship between the decades
+of birth (x-axis) and the average level of the response scores to the 
+question "importance of democracy" (y-axis) for each of the six countries.
+You can use `facet_grid()` or `facet_wrap()` to combine multiple graphs
+into a set of panels. **(1.5 pts)**
+```
+
+```{r p2-2-4}
+#type your code here
+# Create a decade of birth variable
+combined_data <- combined_data %>%
+  mutate(birth_decade = floor(birth_year / 10) * 10)
+
+# Filter for valid birth_decade values (e.g., within the range of the dataset)
+combined_data <- combined_data %>%
+  filter(!is.na(birth_decade) & birth_decade >= 1900 & birth_decade <= 2000)
+
+# Aggregate data by country and birth decade
+decade_data <- combined_data %>%
+  group_by(country, birth_decade) %>%
+  summarise(
+    mean_score = mean(importance_of_democracy, na.rm = TRUE),
+    .groups = "drop"
+  )
+
+# Plot the relationship using facet_wrap
+ggplot(decade_data, aes(x = birth_decade, y = mean_score)) +
+  geom_line(color = "blue") +
+  geom_point(size = 2, color = "red") +
+  facet_wrap(~ country, scales = "free_y") +  # Create individual panels for each country
+  labs(
+    title = "Importance of Democracy by Decade of Birth",
+    x = "Decade of Birth",
+    y = "Average Importance of Democracy Score"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(size = 12, face = "bold"), # Style for panel titles
+    axis.text.x = element_text(angle = 45, hjust = 1)   # Tilt x-axis labels for better readability
+  )
+
+```
+
+3.  **Describe what you find from the graph you made above. Compared to the graph on NYT, what's in common, or what's different? Please type your answer below. (0.5 pts)**
+
+The common part compared from NYT graph. The first one all six countries exhibit sp,e decline in average democracy scores among more recent birth cohorts.Countries like the United States and the United Kingdom show relatively sharper declines compared to others.
+
+The different part from the NYT graph. The NYT graph includes the error bars but the recreated graph does not show statistical uncertainty. The NYT graph presents averages for broad generational groups rather than decade-specific data. In contrast, this graph offers a finer resolution by plotting individual decades of birth. The recreated graph uses a free y-axis for each country, which allows a clearer visualization of trends within each country but makes cross-country comparisons harder. The NYT graph uses a consistent scale across all panels. The recreated graph is simpler in design and lacks annotations or emphasis on "crisis-level" findings.
+
+4.  **Your client wants to hear your conclusion. Do you agree with the argument presented by the graph and the NYT article? Should we really worry about the decline? This is an opinion-based question. Please type your answer below. (0.5 pts)**
+
+Yes, but cautiously. A declining belief in the importance of democracy among younger generations may signal a need to strengthen civic education and engagement. However, the trend does not necessarily indicate an imminent "crisis" of democracy. Further research is needed to identify underlying causes and long-term implications before making policy decisions.
