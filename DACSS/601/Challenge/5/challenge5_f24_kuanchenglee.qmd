@@ -1,0 +1,223 @@
+---
+title: "Challenge 5: Visualizaing Time and Space"
+author: "Kuan-Cheng Lee"
+date: "11/01/2024"
+format:
+  html:
+    df-print: paged
+    embed-resources: true
+    self-contained-math: true
+---
+
+**Make sure you change the author's name and add the data in the above YAML
+header.**
+
+## Setup
+
+If you have not installed the following packages, please install them before loading them.
+
+```{r packages}
+# for data wrangling
+library(dplyr)
+library(tidyr)
+library(lubridate)
+library(readr)
+
+#for plotting over time
+library(ggplot2)
+
+
+# for plotting over space
+library(sp)
+library(sf)
+library(maps)
+```
+
+## Challenge Overview
+
+In this challenge, we will practice the visualization skills learned in the class
+with two datasets to capture the temporal and spatial patterns.
+
+There will be coding components and writing components. Please read the 
+instructions for each part and complete the associated tasks and questions.
+
+## Datasets
+
+-   [Part 1. The UFO Sightings Data (50%)](#part-1.-the-ufo-sightings-data-50)
+-   [Part 2. The Hospital Location Data (50%)](#part-2.-the-hospital-location-data-50)
+
+Download the files from Canvas, save them in the proper place in your
+DACSSS 601 folder, and then read the datasets using the correct R commands.
+
+## Part 1. The UFO Sightings Data (5 pts) {#part-1.-the-ufo-sightings-data-50}
+
+This data contains over 80,000 reports of UFO sightings over the last century 
+in six major countries (and other places). You can learn more about this data by
+checking: <https://www.kaggle.com/datasets/NUFORC/ufo-sightings>.
+
+1.  **Read and Describe the Data (0.5 pts)**
+
+    What are the dimensions of the data? What do the columns mean? What is the 
+    unit of observation?
+    **There are 12 columns and 88875 rows in the data. The first column present the year, month, and date. The second comlumn present the cities that UFO be recorded. The third column present the city belong to the state. The fourth column present the countries which the UFO showed up. The fifth column present the shape of the UFO. The sixth column present the duration time for the UFO. **
+    
+
+    ```{r p1-1}
+    # type your code here.
+    ufo_data <- read.csv("complete_UFO.csv")
+    numberofCol <- ncol(ufo_data)
+    numberofRow <- nrow(ufo_data)
+    
+    numberofCol
+    numberofRow
+    head(ufo_data)
+    ```
+
+2.  Please plot a temporal/time-series graph to present the following patterns.
+**You may need to subset or mutate the data for graphing.**
+
+    \(1\) the total number of UFO sighting reports over the years. **(1.5 pts)**
+
+    ```{r p1-2-1}
+    # type your code here.
+    # Extract the year from the date column and calculate total sightings per year
+    # Check the structure of the dataset
+    str(ufo_data)
+
+    # Preview the first few rows of the dataset
+    head(ufo_data)
+    
+    # Parse the date column with a specific format
+    ufo_data <- ufo_data %>%
+      mutate(datetime = as.Date(datetime, format = "%m/%d/%Y"))
+
+
+    
+   # Extract year and calculate total sightings per year
+    ufo_yearly <- ufo_data %>%
+      mutate(year = year(datetime)) %>%
+      filter(!is.na(year)) %>%
+      group_by(year) %>%
+      summarize(total_sightings = n())
+
+    # Plot total UFO sightings over the years
+    ggplot(ufo_yearly, aes(x = year, y = total_sightings)) +
+      geom_line(color = "blue") +
+      labs(
+        title = "Total UFO Sightings Over the Years",
+        x = "Year",
+        y = "Total Sightings"
+      ) +
+      theme_minimal()
+
+    ```
+
+    \(2\) the total number of UFO sighting reports by months between 2
+    010-01-01 and 2014-01-01. **(1.5 pts)**
+
+    ```{r p1-2-2}
+    #type of your code/command here.
+    # Filter data for the date range and extract year and month
+    ufo_monthly <- ufo_data %>%
+      mutate(date = as.Date(`datetime`, format = "%Y-%m-%d")) %>%  # Replace with actual column name
+      filter(date >= as.Date("2010-01-01") & date < as.Date("2014-01-01")) %>%
+      mutate(month = floor_date(date, "month")) %>%
+      group_by(month) %>%
+      summarize(total_sightings = n())
+
+    # Plot total UFO sightings by month (2010-2014)
+    ggplot(ufo_monthly, aes(x = month, y = total_sightings)) +
+      geom_line(color = "darkgreen") +
+      labs(
+        title = "Monthly UFO Sightings (2010-2014)",
+        x = "Month",
+        y = "Total Sightings"
+      ) +
+      theme_minimal()
+    ```
+
+3.  Please write a paragraph describing the patterns you find on the two graphs
+above. **(1.5 pts)**
+**In the first graph, showing the total UFO sightings over the years, a clear upward trend emerges. Sightings appear to have increased gradually from earlier decades, with a more pronounced rise in reports starting around the 1990s and peaking in recent years. This trend could reflect an increasing public interest in UFOs or more accessible reporting channels over time.**
+
+**The second graph, displaying monthly UFO sightings from January 2010 to January 2014, reveals a seasonal pattern in the data. Sightings tend to peak during the summer months (June to August) each year, with fewer reports in the winter months. This seasonality might indicate that warmer weather and longer daylight hours encourage more outdoor activity, leading to increased chances of observing and reporting UFOs. The consistency of these summer peaks across multiple years suggests a recurring, likely environmental influence on sighting frequency.**
+
+4.  **(Optional)** Use `gganimte` and `gifsky` packages to plot gifs of the 
+above time-series plots. You can refer to codes and commands from the Week 9
+code. **(0 pts)**
+
+    ```{r p1-4}
+    # type your code here.
+    ```
+
+5.  **(Optional)** Suppose we are interested in describing the country
+variations in types and numbers of UFO sighting reports. 
+How can we use bar plots to visualize the difference across countries
+(using the `country` column, you can recode the empty cells with `"others"`)?
+Is this an effective visualization? Why or why not?
+**Note that you may need to do data transformation or mutation in order to
+make the graph.** **(0 pts)**
+
+    ```{r p1-5}
+    # type your code here.
+    ```
+
+## Part 2. The Hospital Location Data (5 pts) {#part-2.-the-hospital-location-data-50}
+
+This data contains the locations of hospitals in the United States. You can
+learn more about this data by checking: 
+<https://www.kaggle.com/datasets/andrewmvd/us-hospital-locations>
+
+1.  **Read and Describe the Data (0.5 pts)**
+
+    What are the dimensions of the data? What do the columns mean? What is 
+    the unit of observation?
+
+    ```{r p2-1}
+    # type your code here.
+    # Read the hospital data
+    hospital_data <- read_csv("us_hospital_locations.csv")
+
+    # Display dimensions and first few rows
+    dim(hospital_data)
+    head(hospital_data)
+    ```
+
+2.  Download the `cb_2018_us_state_500k.shp` data from
+<https://www2.census.gov/geo/tiger/GENZ2018/shp/cb_2018_us_state_500k.zip>). Put
+the whole `cb_2018_us_state_500k` folder in your data folder. Plot a USA map
+with states boundaries using `geom_sf()`. **(1.5 pts)**
+
+    ```{r p2-2}
+    # type your code here.
+    # Read the shapefile for USA state boundaries
+    usa_states <- st_read("cb_2018_us_state_500k/cb_2018_us_state_500k.shp")
+
+    # Plot the USA map with state boundaries
+    ggplot(data = usa_states) +
+      geom_sf() +
+      ggtitle("USA Map with State Boundaries")
+    ```
+
+3.  Plot the hospital locations using the *LONGITUDE* and *LATITUDE* with 
+`geom_point()` on the USA map generated above. Mark OPEN and CLOSED hospitals
+using different colors. **(1.5 pts)**
+
+    ```{r p2-3}
+    # type your code here.
+    # Plot the USA map with hospitals
+    ggplot(data = usa_states) +
+      geom_sf() +
+      geom_point(data = hospital_data, aes(x = LONGITUDE, y = LATITUDE, color = STATUS)) +
+      ggtitle("Hospital Locations in the USA (Open vs Closed)") +
+      theme_minimal() +
+      scale_color_manual(values = c("OPEN" = "green", "CLOSED" = "red"))
+
+    ```
+
+4.  Please write a paragraph describing the pattern of the hospital locations 
+you find on the map above. **(1.5 pts)**
+
+**Based on the map, the distribution of hospitals in the United States reveals several patterns. Hospitals tend to be densely concentrated in urban and metropolitan areas, particularly along the coasts and in large cities such as Los Angeles, New York, and Chicago. The Midwest and rural areas generally have fewer hospitals, with larger distances between them. Additionally, there is a noticeable concentration of hospitals in states with higher populations such as California, Texas, and Florida. The distinction between open and closed hospitals shows that while open hospitals are widespread, there are regions, particularly in more rural or less populated states, where closed hospitals are more common, potentially reflecting economic or demographic changes affecting healthcare access in those areas.**
+
+
