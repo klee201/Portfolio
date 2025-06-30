@@ -1,0 +1,151 @@
+---
+title: "Challenge 6: Basic Principles of Data-Driven Story-telling"
+author: "Kuan-Cheng Lee"
+date: "11/20/2024"
+description: "part 1"
+format:
+  html:
+    df-print: paged
+    embed-resources: true
+    self-contained-math: true
+---
+
+**Make sure you change the author's name in the above YAML header.**
+
+## Challenge Overview
+
+In this challenge, we will mainly apply the principles we learned from Jane 
+Miller's book in practice. You will review multiple examples of data description
+and presentation in text, table/number, and charts/figures. Please read the 
+instructions for each part and complete your challenges.
+
+**For all the screenshots, images, or tables mentioned in the questions, 
+please see the challenge6_f24_instructions.html file. You don't need to include
+any of these items in your rendered challenge file.**
+
+## Part 1. Simple Applications 
+
+1.  **Recall Jane Miller's Ws mentioned in Chapter #2. One of the W's (Who,
+What, When, and Where, Why) is missing from each of the following table 
+descriptions. Rewrite each sentence to include that information. (1 pt)**
+
+    a.  "Germany did the best at the 2002 Winter Olympics, with 35 medals, compared to 34 for the United States, 24 for Norway, and 17 for Canada."
+    
+**“What medal”? The statement should specifically point out the “Total” column. So it should be rewritten as “Germany won 35 total medals (combining Gold, Silver, and Bronze medals), which is the most, at the 2002 Winter Olympics, compared to 34 for the United States, 24 for Norway, and 17 for Canada.**
+
+    b.  "Gold, silver, and bronze medals each accounted for about one-third of the medal total."
+**Who (which country)”? If you review the composition of the medals of each country, you should realize that only the United States fits the statement. So we should rewrite this sentence as: “In the case of the United States, gold, silver, and bronze medals each accounted for about one-third of its medal total.**
+
+    c.  "At the 2002 Winter Olympics, the United States won more medals than all other countries, followed by Canada, Germany, and Norway."
+**What (what medals; and how many numbers)?”**
+
+**A rewritten sentence: “At the 2002 Winter Olympics, the United States won more bronze medals (11) than all other countries, followed by Canada (8), Germany (7), and Norway (6).**
+
+2.  **For each of the following situations, specify whether you would use prose
+of text, a table of numbers, or a particular type of chart/figure. Explain
+why you chose this way to present the data. (2 pt)**
+
+    a.  Statistics on five types of air pollutants in the 10 largest US cities for a government report
+**A 10 by 5 table to show detailed values and organize the 50 numbers, or a barplot with 10 groups of bars (each group represents either a city or a type of air pollutant). Reasons: (1) there are only two variables here, so it is easy to create a table/data frame to present the data and compare different values within the table; (2) city and the types of air pollutants are categorical (nominal variables); they should be visualized in a barplot; (3) this is a government report and thus we need to present the data in a clear and detailed way (thus using table is better than a map).**
+
+    b.  Trends in the value of three stock market indices over one year for a web page
+**A multiple-line chart to illustrate approximate patterns. Reason: (1) it is preferable to use a figure (x-axis as time, y-axis as the variable of interest) to present a time-series pattern; (2) it is better to use multi-media (such as image) to present data on a webpage.**
+
+    c.  Notification to other employees in your corporation of a change in shipping fees
+**Prose (memo) or a table. Reason: this is something related to the terms of a contract, so it is better to use text or a table to describe the change.**
+
+    d.  Distribution of voter preferences for grade-level composition of a new middle school (grades 5--8, grades 6--8, or grades 6--9) for a presentation at a local school board meeting
+**A stacked bar chart or a pie chart (although a pie chart is not ideal). A table is fine, but it can be difficult to read, thus not as intuitive as charts. Reason: The goal is to show the voting distribution so as to be able to compare across categories.**
+
+    e.  National estimates of the number of uninsured among part-time and full-time workers for an introductory section of an article analyzing effects of employment on insurance coverage in New York City
+**Prose (few sentences). Reason: this information is included in an introduction section of an article, and thus, by default, we only summarize or describe the information by text and do not use any non-textual content in an introduction section.**
+
+3.  **Read the sentences below. What additional information would someone
+need in order to answer the associated question? (1 pt)**
+
+    a.  "Brand X costs twice as much as Brand Q. Can I afford Brand X?"
+**How much does Brand Q (or Brand X) cost? How much money do you have?**
+
+    b.  "My uncle is 6'6" tall? Will he fit in my new car?"
+**How big is the door opening to your car? The headroom and legroom?**
+
+    c.  "New Diet Limelite has 25% fewer calories than Diet Fizzjuice. How much faster will I lose weight on Diet Limelite?"
+**How many calories does Diet Fizzjuice (or Diet Limelite) have?**
+
+    d.  "It has been above 25 degrees every day. We're really having a warm month, aren't we?"
+**Where are you located? What month is it? Is temperature being measured in degrees Fahrenheit or degrees Celsius?**
+
+4.  **Indicate whether each of the following sentences correctly reflects table
+4B. If not, rewrite the sentence so that it is correct. Check both the
+correctness and completeness of these sentences. (2 pt)**
+
+    Note: According to [Wikipedia](https://en.wikipedia.org/wiki/Voter_turnout),
+    " In political science, voter turnout is the participation rate (often
+    defined as those who cast a ballot) of a given election. This is 
+    typically the percentage of registered, eligible, or all voting-age people."
+
+    a.  Between 1964 and 1996, there was a steady decline in voter participation.
+**Completeness: didn’t specify which column or voter participation (Vote/RV or Vote/VAP).**
+
+**Correctness: There is not a consistent decline in voter participation measured by either Vote/RV (exception: 1992) or Vote/VAP (exception: 1984 and 1992).**
+
+**Rewrite: Between 1964 and 1996, the general trend of voter participation, either measured by Vote/RV or Vote/VA, declined over time. However, there are several years of exceptions: for example, Vote/RV bounced back to 78.2% in 1992 from 72.5% in 1988, and Vote/RAP had two rebounds in 1984 (53.1% compared to the previous 52.6%) and 1992 (55.2% compared to the previous 50.1%).**
+
+    b.  Voter turnout was better in 1996 (63.4%) than in 1964 (61.9%).
+**Either Completeness or Correctness: It doesn’t make sense to compare two numbers in different columns and different rows. One should never directly compare values between different columns without any specific restrictions on the conditions.**
+
+**Rewrite: Generally speaking, voter turnout measured by Vote/RV is higher than it measured by Vote/VAP because the number of Registered Voters is always smaller than the number of Voting-Age Population. For example, in the year of the lowest Vote/RV (1996), Voter/RV (63.4%) is still higher than Vote/VAP (47.2%)**
+
+    c.  The majority of all registered voters participated in the 1964 US presidential election.
+**Completeness: when describing a table, we should always mention the specific numbers.**
+**Rewrite: The majority of all registered voters (95.8%) participated in the 1964 US presidential election.**
+
+    d.  The best year for voter turnout was 1992, with 104,600 people voting.
+**Completeness: didn’t specify which column or voter participation (Vote/RV or Vote/VAP).**
+
+**Correctness: (1) incorrect statement: voter turnout is the % of people voting, not the raw number of people who cast votes; (2) by either measurement of voter turnout, 1992 is not the year of the highest voter turnout; and (3) the unit is 1,000 people, so the number should be read as “104,600,000 people”, not “104,600 people”.**
+
+**Rewrite: The best year for voter turnout (95.8% of Vote/RV and 61.9% of Vote/VAP) was 1964, with 70,645,000 people voting.**
+
+    e.  A higher percentage of the voting-age population was registered to vote in 1996 than in 1964.
+**Completeness: when describing a table, we should always mention the specific numbers.**
+
+**Rewrite: A higher percentage of the voting-age population was registered to vote in 1996 (74.40%) than in 1964 (64.61%). (Note: you need to calculate these two numbers manually).**
+
+5.  **Identify terms that need to be defined or restated for a non-technical
+audience without much knowledge about the topic or statistical method. You
+don't need to explain these terms (you don't need to know any of the statistical
+methods mentioned).** **Just identify them. (1 pt)**
+
+    a\. "According to the latest study based on the 
+    [VDem Dataset](https://v-dem.net/data/the-v-dem-dataset/), the average Rule of Law score is statistically higher in democratic countries than non-democratic countries based on a t-test (p = 0.01)."
+**(1) What is the VDem Datatset? (2) What does “statistically higher” mean? **
+
+**What are the definitions and measurements of “democratic countries” and “non-democratic countries”? (4) How is the Rule of Law score measured? What is its range, mean, unique values, standard errors, and other statistics? (5) What is a t-test? and (6) What does p-value mean?_ **
+
+    b\. " According to the logistic regression results in the screenshot below,we can see a positive correlation between household income and the vote choice for G.W. Bush, with a positive coefficient (log-odd = 0.33). "
+**(1) What is a logistic regression? (2) What exactly does it mean by a “positive correlation”? (3) What is a positive coefficient？ and (4) What does log-odd mean? Is the number large or small?**
+
+## Part 2. Practical Applications
+
+1.  **Suppose you work as a data analyst in the music-producing industry. One 
+day, you get a data report that studies the popularity of different genres of
+music. The following scatter plot is presented to you. There is no text
+description for either this table or the data. (1.5 pts)**
+
+    \(1\) What information can you describe or summarize based on the current graph? (1 pt) (0.5 pts)
+**The y-axis represents popularity. Popularity is a continuous variable. We have more observations when variable_1 is smaller than 5. It’s hard to eyeball a significant pattern between x and y.**
+
+    \(2\) Thinking of the principles we learned in the week of visualization customization and Jane Miller's principles. What additional information(Please describe at least three things [at least one thing that is NOT about graph customization, such as title, color, label, etc.] that you consider adding to this table so that it can convey meaningful information. (1 point)(For your reference, this is the original source of the dataset: <https://www.kaggle.com/datasets/leonardopena/top-spotify-songs-from-20102019-by-year>)
+**(1) What’s the measurement of variable_1? (2) What’s the measurement of pop? (3) Change variable names of x-axis and y-axis. (4) Add title to the graph.**
+
+2.  **Two articles on scientific studies talk about the "risks." Please read 
+the titles and quotes from these two articles and answer the following two 
+questions. (1.5)**
+
+    \(1\) Given the information provided, in which case is there a greater
+    "risk": the Pancreatic Cancer case or the Diabetes case? (0.5 pts)
+**We can’t know the answer based on the information provided.**
+
+    \(2\) Think of Jane Miller's principles. What additional information would you need to know to compare the "risk" in the two cases? (1 pt)
+**It is neither meaningful nor helpful to compare the risks of the two diseases, since we don’t know about the baseline of either case. For example, what is the probability of getting pancreatic cancer and the probability of getting a Diabetes given the same conditions or based on the general/targeted population. Maybe for the general population who consume the same level of soda, the risk of getting diabetes is much higher than getting pancreatic cancer. We also need the time frame of both studies to be able to differentiate between short-term and long-term effects (or even building an event-history model) of soda consumption. Finally, it’s not clear how each study operationalized one soda (how much sugar? Does this include diet beverages? etc.).**
